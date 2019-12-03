@@ -1,0 +1,24 @@
+companies = pd.read_csv("https://raw.githubusercontent.com/notpeter/crunchbase-data/master/companies.csv")
+df= companies[companies.funding_total_usd != '-']
+## Set index to countries 
+countries= df.set_index('country_code')
+### American Startups
+us= countries.loc['USA']
+us=us.reset_index()
+us=us.drop(['permalink','homepage_url','country_code'], axis=1)
+# Drop na
+us=us.dropna()
+# Everything lowercase
+us=us.apply(lambda x: x.astype(str).str.lower())
+#Remove Hyphens 
+# us['founded_at']= us['founded_at'].str.replace("-","/")
+# us['first_funding_at']= us['first_funding_at'].str.replace("-","/")
+# us['last_funding_at']= us['last_funding_at'].str.replace("-","/")
+##Integers
+# us['founded_at']=us['founded_at'].astype(int)
+# us['first_funding_at']= us['first_funding_at'].astype(int)
+# us['last_funding_at']= us['last_funding_at'].astype(int)
+us['funding_rounds'] = us['funding_rounds'].astype(int)
+### Floats
+us['funding_total_usd'] = us['funding_total_usd'].astype(float)
+us
